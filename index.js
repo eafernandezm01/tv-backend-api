@@ -73,21 +73,45 @@ function seedDatabase() {
     if (err) return console.error(err.message);
     if (row.total > 0) return;
 
-    const sampleData = [
-      { title: 'Breaking Bad', year: 2008, image: 'https://upload.wikimedia.org/wikipedia/en/6/61/Breaking_Bad_title_card.png', platform: 'Netflix', type: 'serie', genre: 'Drama' },
-      { title: 'You', year: 2018, image: 'https://upload.wikimedia.org/wikipedia/en/8/8f/You_%28TV_series%29.png', platform: 'Netflix', type: 'serie', genre: 'Thriller' },
-      { title: 'Dexter', year: 2006, image: 'https://upload.wikimedia.org/wikipedia/en/c/c0/Dexter_TV_series.jpg', platform: 'Netflix', type: 'serie', genre: 'Crimen' },
-      { title: 'Stranger Things', year: 2016, image: 'https://upload.wikimedia.org/wikipedia/en/f/f7/Stranger_Things_season_4.jpg', platform: 'Netflix', type: 'serie', genre: 'Ciencia ficción' },
-      { title: 'The Witcher', year: 2019, image: 'https://upload.wikimedia.org/wikipedia/en/1/1f/The_Witcher_title_card.png', platform: 'Netflix', type: 'serie', genre: 'Fantasía' },
-      { title: 'Interstellar', year: 2014, image: 'https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg', platform: 'Prime Video', type: 'pelicula', genre: 'Ciencia ficción' },
-      { title: 'Inception', year: 2010, image: 'https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg', platform: 'HBO Max', type: 'pelicula', genre: 'Ciencia ficción' },
-      { title: 'Avatar', year: 2009, image: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Avatar_%282009_film%29_poster.jpg', platform: 'Disney+', type: 'pelicula', genre: 'Aventura' },
-      { title: 'The Dark Knight', year: 2008, image: 'https://upload.wikimedia.org/wikipedia/en/8/8a/Dark_Knight.jpg', platform: 'HBO Max', type: 'pelicula', genre: 'Acción' },
-      { title: 'Titanic', year: 1997, image: 'https://upload.wikimedia.org/wikipedia/en/2/22/Titanic_poster.jpg', platform: 'Disney+', type: 'pelicula', genre: 'Romance' },
-      { title: 'Gladiator', year: 2000, image: 'https://upload.wikimedia.org/wikipedia/en/8/8d/Gladiator_ver1.jpg', platform: 'Netflix', type: 'pelicula', genre: 'Histórica' },
-      { title: 'Our Planet', year: 2019, image: 'https://upload.wikimedia.org/wikipedia/en/a/a6/Our_Planet_title_card.jpg', platform: 'Netflix', type: 'documental', genre: 'Naturaleza' },
-      { title: 'The Social Dilemma', year: 2020, image: 'https://upload.wikimedia.org/wikipedia/en/9/97/The_Social_Dilemma_poster.png', platform: 'Netflix', type: 'documental', genre: 'Tecnología' }
-    ];
+  const sampleData = [
+    // SERIES
+    { title: 'Breaking Bad', year: 2008, image: 'https://placehold.co/300x450?text=Breaking+Bad', platform: 'Netflix', type: 'serie', genre: 'Drama' },
+    { title: 'Dexter', year: 2006, image: 'https://placehold.co/300x450?text=Dexter', platform: 'Netflix', type: 'serie', genre: 'Crimen' },
+    { title: 'You', year: 2018, image: 'https://placehold.co/300x450?text=You', platform: 'Netflix', type: 'serie', genre: 'Thriller' },
+    { title: 'Stranger Things', year: 2016, image: 'https://placehold.co/300x450?text=Stranger+Things', platform: 'Netflix', type: 'serie', genre: 'Ciencia ficción' },
+    { title: 'The Witcher', year: 2019, image: 'https://placehold.co/300x450?text=The+Witcher', platform: 'Netflix', type: 'serie', genre: 'Fantasía' },
+    { title: 'Dark', year: 2017, image: 'https://placehold.co/300x450?text=Dark', platform: 'Netflix', type: 'serie', genre: 'Ciencia ficción' },
+    { title: 'Peaky Blinders', year: 2013, image: 'https://placehold.co/300x450?text=Peaky+Blinders', platform: 'Netflix', type: 'serie', genre: 'Crimen' },
+    { title: 'The Crown', year: 2016, image: 'https://placehold.co/300x450?text=The+Crown', platform: 'Netflix', type: 'serie', genre: 'Drama' },
+    { title: 'Vikings', year: 2013, image: 'https://placehold.co/300x450?text=Vikings', platform: 'Prime Video', type: 'serie', genre: 'Histórica' },
+    { title: 'The Mandalorian', year: 2019, image: 'https://placehold.co/300x450?text=Mandalorian', platform: 'Disney+', type: 'serie', genre: 'Ciencia ficción' },
+    { title: 'House of the Dragon', year: 2022, image: 'https://placehold.co/300x450?text=House+of+the+Dragon', platform: 'HBO Max', type: 'serie', genre: 'Fantasía' },
+    { title: 'The Boys', year: 2019, image: 'https://placehold.co/300x450?text=The+Boys', platform: 'Prime Video', type: 'serie', genre: 'Acción' },
+
+    // PELÍCULAS
+    { title: 'Interstellar', year: 2014, image: 'https://placehold.co/300x450?text=Interstellar', platform: 'Prime Video', type: 'pelicula', genre: 'Ciencia ficción' },
+    { title: 'Inception', year: 2010, image: 'https://placehold.co/300x450?text=Inception', platform: 'HBO Max', type: 'pelicula', genre: 'Ciencia ficción' },
+    { title: 'Avatar', year: 2009, image: 'https://placehold.co/300x450?text=Avatar', platform: 'Disney+', type: 'pelicula', genre: 'Aventura' },
+    { title: 'The Dark Knight', year: 2008, image: 'https://placehold.co/300x450?text=Dark+Knight', platform: 'HBO Max', type: 'pelicula', genre: 'Acción' },
+    { title: 'Titanic', year: 1997, image: 'https://placehold.co/300x450?text=Titanic', platform: 'Disney+', type: 'pelicula', genre: 'Romance' },
+    { title: 'Gladiator', year: 2000, image: 'https://placehold.co/300x450?text=Gladiator', platform: 'Netflix', type: 'pelicula', genre: 'Histórica' },
+    { title: 'Joker', year: 2019, image: 'https://placehold.co/300x450?text=Joker', platform: 'HBO Max', type: 'pelicula', genre: 'Drama' },
+    { title: 'Avengers Endgame', year: 2019, image: 'https://placehold.co/300x450?text=Endgame', platform: 'Disney+', type: 'pelicula', genre: 'Acción' },
+    { title: 'The Matrix', year: 1999, image: 'https://placehold.co/300x450?text=Matrix', platform: 'HBO Max', type: 'pelicula', genre: 'Ciencia ficción' },
+    { title: 'Forrest Gump', year: 1994, image: 'https://placehold.co/300x450?text=Forrest+Gump', platform: 'Prime Video', type: 'pelicula', genre: 'Drama' },
+    { title: 'The Godfather', year: 1972, image: 'https://placehold.co/300x450?text=Godfather', platform: 'Netflix', type: 'pelicula', genre: 'Crimen' },
+    { title: 'Pulp Fiction', year: 1994, image: 'https://placehold.co/300x450?text=Pulp+Fiction', platform: 'Netflix', type: 'pelicula', genre: 'Crimen' },
+    { title: 'Fight Club', year: 1999, image: 'https://placehold.co/300x450?text=Fight+Club', platform: 'Prime Video', type: 'pelicula', genre: 'Drama' },
+    { title: 'The Lion King', year: 1994, image: 'https://placehold.co/300x450?text=Lion+King', platform: 'Disney+', type: 'pelicula', genre: 'Aventura' },
+    { title: 'Frozen', year: 2013, image: 'https://placehold.co/300x450?text=Frozen', platform: 'Disney+', type: 'pelicula', genre: 'Fantasía' },
+
+    // DOCUMENTALES
+    { title: 'Our Planet', year: 2019, image: 'https://placehold.co/300x450?text=Our+Planet', platform: 'Netflix', type: 'documental', genre: 'Naturaleza' },
+    { title: 'The Social Dilemma', year: 2020, image: 'https://placehold.co/300x450?text=Social+Dilemma', platform: 'Netflix', type: 'documental', genre: 'Tecnología' },
+    { title: 'Planet Earth', year: 2006, image: 'https://placehold.co/300x450?text=Planet+Earth', platform: 'Netflix', type: 'documental', genre: 'Naturaleza' },
+    { title: 'Cosmos', year: 2014, image: 'https://placehold.co/300x450?text=Cosmos', platform: 'Disney+', type: 'documental', genre: 'Tecnología' },
+    { title: 'Inside Bill Gates', year: 2019, image: 'https://placehold.co/300x450?text=Bill+Gates', platform: 'Netflix', type: 'documental', genre: 'Tecnología' }
+  ];
 
     sampleData.forEach(item => {
       db.get(
