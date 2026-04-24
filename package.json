@@ -1,7 +1,7 @@
 {
-  "name": "tv-backend-api",
+  "name": "backend-tv-tablas-nuevas",
   "version": "1.0.0",
-  "description": "Backend Node.js con Express y SQLite para CRUD de contenido de plataformas TV",
+  "description": "API REST con Node.js, Express y SQLite para contenido de plataformas TV",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
