@@ -49,13 +49,41 @@ db.serialize(() => {
     )
   `);
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS content_details (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content_id INTEGER NOT NULL UNIQUE,
+      synopsis TEXT,
+      duration INTEGER,
+      seasons INTEGER,
+      episodes INTEGER,
+      director TEXT,
+      cast TEXT,
+      rating REAL,
+      trailer TEXT,
+      FOREIGN KEY (content_id) REFERENCES content(id) ON DELETE CASCADE
+    )
+  `);
+
   seedDatabase();
 });
 
 function seedDatabase() {
   const platforms = ['Netflix', 'HBO Max', 'Prime Video', 'Disney+'];
   const types = ['pelicula', 'serie', 'documental'];
-  const genres = ['Drama', 'Thriller', 'Crimen', 'Ciencia ficción', 'Fantasía', 'Acción', 'Aventura', 'Naturaleza', 'Tecnología', 'Romance', 'Histórica'];
+  const genres = [
+    'Drama',
+    'Thriller',
+    'Crimen',
+    'Ciencia ficción',
+    'Fantasía',
+    'Acción',
+    'Aventura',
+    'Naturaleza',
+    'Tecnología',
+    'Romance',
+    'Histórica'
+  ];
 
   platforms.forEach(name => {
     db.run('INSERT OR IGNORE INTO platforms (name) VALUES (?)', [name]);
@@ -73,45 +101,134 @@ function seedDatabase() {
     if (err) return console.error(err.message);
     if (row.total > 0) return;
 
-  const sampleData = [
-    // SERIES
-    { title: 'Breaking Bad', year: 2008, image: 'https://placehold.co/300x450?text=Breaking+Bad', platform: 'Netflix', type: 'serie', genre: 'Drama' },
-    { title: 'Dexter', year: 2006, image: 'https://placehold.co/300x450?text=Dexter', platform: 'Netflix', type: 'serie', genre: 'Crimen' },
-    { title: 'You', year: 2018, image: 'https://placehold.co/300x450?text=You', platform: 'Netflix', type: 'serie', genre: 'Thriller' },
-    { title: 'Stranger Things', year: 2016, image: 'https://placehold.co/300x450?text=Stranger+Things', platform: 'Netflix', type: 'serie', genre: 'Ciencia ficción' },
-    { title: 'The Witcher', year: 2019, image: 'https://placehold.co/300x450?text=The+Witcher', platform: 'Netflix', type: 'serie', genre: 'Fantasía' },
-    { title: 'Dark', year: 2017, image: 'https://placehold.co/300x450?text=Dark', platform: 'Netflix', type: 'serie', genre: 'Ciencia ficción' },
-    { title: 'Peaky Blinders', year: 2013, image: 'https://placehold.co/300x450?text=Peaky+Blinders', platform: 'Netflix', type: 'serie', genre: 'Crimen' },
-    { title: 'The Crown', year: 2016, image: 'https://placehold.co/300x450?text=The+Crown', platform: 'Netflix', type: 'serie', genre: 'Drama' },
-    { title: 'Vikings', year: 2013, image: 'https://placehold.co/300x450?text=Vikings', platform: 'Prime Video', type: 'serie', genre: 'Histórica' },
-    { title: 'The Mandalorian', year: 2019, image: 'https://placehold.co/300x450?text=Mandalorian', platform: 'Disney+', type: 'serie', genre: 'Ciencia ficción' },
-    { title: 'House of the Dragon', year: 2022, image: 'https://placehold.co/300x450?text=House+of+the+Dragon', platform: 'HBO Max', type: 'serie', genre: 'Fantasía' },
-    { title: 'The Boys', year: 2019, image: 'https://placehold.co/300x450?text=The+Boys', platform: 'Prime Video', type: 'serie', genre: 'Acción' },
-
-    // PELÍCULAS
-    { title: 'Interstellar', year: 2014, image: 'https://placehold.co/300x450?text=Interstellar', platform: 'Prime Video', type: 'pelicula', genre: 'Ciencia ficción' },
-    { title: 'Inception', year: 2010, image: 'https://placehold.co/300x450?text=Inception', platform: 'HBO Max', type: 'pelicula', genre: 'Ciencia ficción' },
-    { title: 'Avatar', year: 2009, image: 'https://placehold.co/300x450?text=Avatar', platform: 'Disney+', type: 'pelicula', genre: 'Aventura' },
-    { title: 'The Dark Knight', year: 2008, image: 'https://placehold.co/300x450?text=Dark+Knight', platform: 'HBO Max', type: 'pelicula', genre: 'Acción' },
-    { title: 'Titanic', year: 1997, image: 'https://placehold.co/300x450?text=Titanic', platform: 'Disney+', type: 'pelicula', genre: 'Romance' },
-    { title: 'Gladiator', year: 2000, image: 'https://placehold.co/300x450?text=Gladiator', platform: 'Netflix', type: 'pelicula', genre: 'Histórica' },
-    { title: 'Joker', year: 2019, image: 'https://placehold.co/300x450?text=Joker', platform: 'HBO Max', type: 'pelicula', genre: 'Drama' },
-    { title: 'Avengers Endgame', year: 2019, image: 'https://placehold.co/300x450?text=Endgame', platform: 'Disney+', type: 'pelicula', genre: 'Acción' },
-    { title: 'The Matrix', year: 1999, image: 'https://placehold.co/300x450?text=Matrix', platform: 'HBO Max', type: 'pelicula', genre: 'Ciencia ficción' },
-    { title: 'Forrest Gump', year: 1994, image: 'https://placehold.co/300x450?text=Forrest+Gump', platform: 'Prime Video', type: 'pelicula', genre: 'Drama' },
-    { title: 'The Godfather', year: 1972, image: 'https://placehold.co/300x450?text=Godfather', platform: 'Netflix', type: 'pelicula', genre: 'Crimen' },
-    { title: 'Pulp Fiction', year: 1994, image: 'https://placehold.co/300x450?text=Pulp+Fiction', platform: 'Netflix', type: 'pelicula', genre: 'Crimen' },
-    { title: 'Fight Club', year: 1999, image: 'https://placehold.co/300x450?text=Fight+Club', platform: 'Prime Video', type: 'pelicula', genre: 'Drama' },
-    { title: 'The Lion King', year: 1994, image: 'https://placehold.co/300x450?text=Lion+King', platform: 'Disney+', type: 'pelicula', genre: 'Aventura' },
-    { title: 'Frozen', year: 2013, image: 'https://placehold.co/300x450?text=Frozen', platform: 'Disney+', type: 'pelicula', genre: 'Fantasía' },
-
-    // DOCUMENTALES
-    { title: 'Our Planet', year: 2019, image: 'https://placehold.co/300x450?text=Our+Planet', platform: 'Netflix', type: 'documental', genre: 'Naturaleza' },
-    { title: 'The Social Dilemma', year: 2020, image: 'https://placehold.co/300x450?text=Social+Dilemma', platform: 'Netflix', type: 'documental', genre: 'Tecnología' },
-    { title: 'Planet Earth', year: 2006, image: 'https://placehold.co/300x450?text=Planet+Earth', platform: 'Netflix', type: 'documental', genre: 'Naturaleza' },
-    { title: 'Cosmos', year: 2014, image: 'https://placehold.co/300x450?text=Cosmos', platform: 'Disney+', type: 'documental', genre: 'Tecnología' },
-    { title: 'Inside Bill Gates', year: 2019, image: 'https://placehold.co/300x450?text=Bill+Gates', platform: 'Netflix', type: 'documental', genre: 'Tecnología' }
-  ];
+    const sampleData = [
+      {
+        title: 'Breaking Bad',
+        year: 2008,
+        image: 'https://placehold.co/300x450?text=Breaking+Bad',
+        platform: 'Netflix',
+        type: 'serie',
+        genre: 'Drama',
+        details: {
+          synopsis: 'Un profesor de química comienza a fabricar metanfetamina tras recibir un diagnóstico de cáncer.',
+          duration: null,
+          seasons: 5,
+          episodes: 62,
+          director: 'Vince Gilligan',
+          cast: 'Bryan Cranston, Aaron Paul, Anna Gunn',
+          rating: 9.5,
+          trailer: 'https://www.youtube.com/results?search_query=Breaking+Bad+trailer'
+        }
+      },
+      {
+        title: 'Dexter',
+        year: 2006,
+        image: 'https://placehold.co/300x450?text=Dexter',
+        platform: 'Netflix',
+        type: 'serie',
+        genre: 'Crimen',
+        details: {
+          synopsis: 'Dexter Morgan trabaja como forense en Miami, pero oculta una doble vida como asesino en serie.',
+          duration: null,
+          seasons: 8,
+          episodes: 96,
+          director: 'James Manos Jr.',
+          cast: 'Michael C. Hall, Jennifer Carpenter',
+          rating: 8.6,
+          trailer: 'https://www.youtube.com/results?search_query=Dexter+trailer'
+        }
+      },
+      {
+        title: 'Stranger Things',
+        year: 2016,
+        image: 'https://placehold.co/300x450?text=Stranger+Things',
+        platform: 'Netflix',
+        type: 'serie',
+        genre: 'Ciencia ficción',
+        details: {
+          synopsis: 'Un grupo de niños descubre fuerzas sobrenaturales y secretos del gobierno en su pequeño pueblo.',
+          duration: null,
+          seasons: 4,
+          episodes: 34,
+          director: 'The Duffer Brothers',
+          cast: 'Millie Bobby Brown, Finn Wolfhard, David Harbour',
+          rating: 8.7,
+          trailer: 'https://www.youtube.com/results?search_query=Stranger+Things+trailer'
+        }
+      },
+      {
+        title: 'Interstellar',
+        year: 2014,
+        image: 'https://placehold.co/300x450?text=Interstellar',
+        platform: 'Prime Video',
+        type: 'pelicula',
+        genre: 'Ciencia ficción',
+        details: {
+          synopsis: 'Un grupo de astronautas viaja a través de un agujero de gusano para buscar un nuevo hogar para la humanidad.',
+          duration: 169,
+          seasons: null,
+          episodes: null,
+          director: 'Christopher Nolan',
+          cast: 'Matthew McConaughey, Anne Hathaway, Jessica Chastain',
+          rating: 8.7,
+          trailer: 'https://www.youtube.com/results?search_query=Interstellar+trailer'
+        }
+      },
+      {
+        title: 'Inception',
+        year: 2010,
+        image: 'https://placehold.co/300x450?text=Inception',
+        platform: 'HBO Max',
+        type: 'pelicula',
+        genre: 'Ciencia ficción',
+        details: {
+          synopsis: 'Un ladrón especializado en robar secretos dentro de los sueños recibe una misión casi imposible.',
+          duration: 148,
+          seasons: null,
+          episodes: null,
+          director: 'Christopher Nolan',
+          cast: 'Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page',
+          rating: 8.8,
+          trailer: 'https://www.youtube.com/results?search_query=Inception+trailer'
+        }
+      },
+      {
+        title: 'Avatar',
+        year: 2009,
+        image: 'https://placehold.co/300x450?text=Avatar',
+        platform: 'Disney+',
+        type: 'pelicula',
+        genre: 'Aventura',
+        details: {
+          synopsis: 'Un exmarine viaja al planeta Pandora y se ve atrapado entre su misión y el mundo de los Na’vi.',
+          duration: 162,
+          seasons: null,
+          episodes: null,
+          director: 'James Cameron',
+          cast: 'Sam Worthington, Zoe Saldaña, Sigourney Weaver',
+          rating: 7.9,
+          trailer: 'https://www.youtube.com/results?search_query=Avatar+trailer'
+        }
+      },
+      {
+        title: 'Our Planet',
+        year: 2019,
+        image: 'https://placehold.co/300x450?text=Our+Planet',
+        platform: 'Netflix',
+        type: 'documental',
+        genre: 'Naturaleza',
+        details: {
+          synopsis: 'Documental sobre la belleza natural del planeta y el impacto del ser humano en los ecosistemas.',
+          duration: null,
+          seasons: 1,
+          episodes: 8,
+          director: 'Alastair Fothergill',
+          cast: 'David Attenborough',
+          rating: 9.3,
+          trailer: 'https://www.youtube.com/results?search_query=Our+Planet+trailer'
+        }
+      }
+    ];
 
     sampleData.forEach(item => {
       db.get(
@@ -120,12 +237,42 @@ function seedDatabase() {
          WHERE p.name = ? AND t.name = ? AND g.name = ?`,
         [item.platform, item.type, item.genre],
         (err2, ids) => {
-          if (err2 || !ids) return console.error(err2?.message || 'IDs no encontrados');
+          if (err2 || !ids) {
+            return console.error(err2?.message || 'IDs no encontrados');
+          }
 
           db.run(
-            `INSERT INTO content (title, year, image, platform_id, type_id, genre_id)
+            `INSERT INTO content 
+             (title, year, image, platform_id, type_id, genre_id)
              VALUES (?, ?, ?, ?, ?, ?)`,
-            [item.title, item.year, item.image, ids.platform_id, ids.type_id, ids.genre_id]
+            [
+              item.title,
+              item.year,
+              item.image,
+              ids.platform_id,
+              ids.type_id,
+              ids.genre_id
+            ],
+            function (insertErr) {
+              if (insertErr) return console.error(insertErr.message);
+
+              db.run(
+                `INSERT OR IGNORE INTO content_details
+                 (content_id, synopsis, duration, seasons, episodes, director, cast, rating, trailer)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                  this.lastID,
+                  item.details.synopsis,
+                  item.details.duration,
+                  item.details.seasons,
+                  item.details.episodes,
+                  item.details.director,
+                  item.details.cast,
+                  item.details.rating,
+                  item.details.trailer
+                ]
+              );
+            }
           );
         }
       );
@@ -138,11 +285,20 @@ function selectContentById(id, callback) {
     `SELECT c.id, c.title, c.year, c.image,
             p.id AS platform_id, p.name AS platform,
             t.id AS type_id, t.name AS type,
-            g.id AS genre_id, g.name AS genre
+            g.id AS genre_id, g.name AS genre,
+            d.synopsis,
+            d.duration,
+            d.seasons,
+            d.episodes,
+            d.director,
+            d.cast,
+            d.rating,
+            d.trailer
      FROM content c
      JOIN platforms p ON c.platform_id = p.id
      JOIN types t ON c.type_id = t.id
      JOIN genres g ON c.genre_id = g.id
+     LEFT JOIN content_details d ON d.content_id = c.id
      WHERE c.id = ?`,
     [id],
     callback
@@ -150,7 +306,7 @@ function selectContentById(id, callback) {
 }
 
 function validateContent(body, callback) {
-  const { title, year, image, platform_id, type_id, genre_id } = body;
+  const { title, year, platform_id, type_id, genre_id } = body;
 
   if (!title || !year || !platform_id || !type_id || !genre_id) {
     return callback('Los campos title, year, platform_id, type_id y genre_id son obligatorios.');
@@ -158,10 +314,6 @@ function validateContent(body, callback) {
 
   if (isNaN(Number(year))) {
     return callback('El campo year debe ser numérico.');
-  }
-
-  if (image && typeof image !== 'string') {
-    return callback('El campo image debe ser texto.');
   }
 
   db.get('SELECT id FROM platforms WHERE id = ?', [platform_id], (err, platformRow) => {
@@ -175,6 +327,7 @@ function validateContent(body, callback) {
       db.get('SELECT id FROM genres WHERE id = ?', [genre_id], (err3, genreRow) => {
         if (err3) return callback('Error validando genre_id.');
         if (!genreRow) return callback('El género indicado no existe.');
+
         callback(null);
       });
     });
@@ -186,6 +339,7 @@ app.get('/', (req, res) => {
     message: 'API TV funcionando',
     endpoints: {
       content: '/api/content',
+      contentDetail: '/api/content/:id',
       platforms: '/api/platforms',
       types: '/api/types',
       genres: '/api/genres'
@@ -246,27 +400,73 @@ app.get('/api/content/:id', (req, res) => {
   selectContentById(req.params.id, (err, row) => {
     if (err) return res.status(500).json({ error: 'Error al obtener el contenido.' });
     if (!row) return res.status(404).json({ error: 'Contenido no encontrado.' });
+
     res.json(row);
   });
 });
 
 app.post('/api/content', (req, res) => {
   validateContent(req.body, validationError => {
-    if (validationError) return res.status(400).json({ error: validationError });
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
 
-    const { title, year, image, platform_id, type_id, genre_id } = req.body;
+    const {
+      title,
+      year,
+      image,
+      platform_id,
+      type_id,
+      genre_id,
+      synopsis,
+      duration,
+      seasons,
+      episodes,
+      director,
+      cast,
+      rating,
+      trailer
+    } = req.body;
 
     db.run(
-      `INSERT INTO content (title, year, image, platform_id, type_id, genre_id)
+      `INSERT INTO content 
+       (title, year, image, platform_id, type_id, genre_id)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [title, Number(year), image || null, platform_id, type_id, genre_id],
       function (err) {
         if (err) return res.status(500).json({ error: 'Error al crear el contenido.' });
 
-        selectContentById(this.lastID, (readErr, row) => {
-          if (readErr) return res.status(500).json({ error: 'Creado, pero no se pudo recuperar.' });
-          res.status(201).json(row);
-        });
+        const contentId = this.lastID;
+
+        db.run(
+          `INSERT INTO content_details
+           (content_id, synopsis, duration, seasons, episodes, director, cast, rating, trailer)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            contentId,
+            synopsis || null,
+            duration || null,
+            seasons || null,
+            episodes || null,
+            director || null,
+            cast || null,
+            rating || null,
+            trailer || null
+          ],
+          detailErr => {
+            if (detailErr) {
+              return res.status(500).json({ error: 'Contenido creado, pero error al guardar detalles.' });
+            }
+
+            selectContentById(contentId, (readErr, row) => {
+              if (readErr) {
+                return res.status(500).json({ error: 'Creado, pero no se pudo recuperar.' });
+              }
+
+              res.status(201).json(row);
+            });
+          }
+        );
       }
     );
   });
@@ -274,9 +474,26 @@ app.post('/api/content', (req, res) => {
 
 app.put('/api/content/:id', (req, res) => {
   validateContent(req.body, validationError => {
-    if (validationError) return res.status(400).json({ error: validationError });
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
 
-    const { title, year, image, platform_id, type_id, genre_id } = req.body;
+    const {
+      title,
+      year,
+      image,
+      platform_id,
+      type_id,
+      genre_id,
+      synopsis,
+      duration,
+      seasons,
+      episodes,
+      director,
+      cast,
+      rating,
+      trailer
+    } = req.body;
 
     db.run(
       `UPDATE content
@@ -287,10 +504,44 @@ app.put('/api/content/:id', (req, res) => {
         if (err) return res.status(500).json({ error: 'Error al actualizar el contenido.' });
         if (this.changes === 0) return res.status(404).json({ error: 'Contenido no encontrado.' });
 
-        selectContentById(req.params.id, (readErr, row) => {
-          if (readErr) return res.status(500).json({ error: 'Actualizado, pero no se pudo recuperar.' });
-          res.json(row);
-        });
+        db.run(
+          `INSERT INTO content_details
+           (content_id, synopsis, duration, seasons, episodes, director, cast, rating, trailer)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(content_id) DO UPDATE SET
+             synopsis = excluded.synopsis,
+             duration = excluded.duration,
+             seasons = excluded.seasons,
+             episodes = excluded.episodes,
+             director = excluded.director,
+             cast = excluded.cast,
+             rating = excluded.rating,
+             trailer = excluded.trailer`,
+          [
+            req.params.id,
+            synopsis || null,
+            duration || null,
+            seasons || null,
+            episodes || null,
+            director || null,
+            cast || null,
+            rating || null,
+            trailer || null
+          ],
+          detailErr => {
+            if (detailErr) {
+              return res.status(500).json({ error: 'Contenido actualizado, pero error al actualizar detalles.' });
+            }
+
+            selectContentById(req.params.id, (readErr, row) => {
+              if (readErr) {
+                return res.status(500).json({ error: 'Actualizado, pero no se pudo recuperar.' });
+              }
+
+              res.json(row);
+            });
+          }
+        );
       }
     );
   });
@@ -300,6 +551,7 @@ app.delete('/api/content/:id', (req, res) => {
   db.run('DELETE FROM content WHERE id = ?', [req.params.id], function (err) {
     if (err) return res.status(500).json({ error: 'Error al eliminar el contenido.' });
     if (this.changes === 0) return res.status(404).json({ error: 'Contenido no encontrado.' });
+
     res.json({ message: 'Contenido eliminado correctamente.' });
   });
 });
